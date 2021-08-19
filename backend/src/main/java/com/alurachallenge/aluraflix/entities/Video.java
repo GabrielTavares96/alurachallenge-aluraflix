@@ -1,6 +1,8 @@
 package com.alurachallenge.aluraflix.entities;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "videos")
@@ -9,8 +11,15 @@ public class Video {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Size(min = 5, max = 60, message = "Deve ter entre 5 e 60 caracteres")
+    @NotBlank(message = "Campo obrigatório")
     private String titulo;
+
+    @NotBlank(message = "Campo obrigatório")
     private String descricao;
+
+    @NotBlank(message = "Campo obrigatório")
     private String url;
 
     public Video() {

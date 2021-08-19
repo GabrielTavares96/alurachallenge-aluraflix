@@ -14,7 +14,7 @@ public class VideoService {
     @Autowired
     private VideoRepository repository;
 
-    public Video findById(Long id){
+    public Video findById(Long id) {
         Optional<Video> video = repository.findById(id);
         return video.get();
     }
@@ -22,5 +22,11 @@ public class VideoService {
     public List<Video> findAll() {
         List<Video> videos = repository.findAll();
         return videos;
+    }
+
+    public Video insert(Video video) {
+        Video entity = new Video();
+        entity = repository.save(video);
+        return entity;
     }
 }
