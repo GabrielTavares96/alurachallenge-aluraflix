@@ -38,6 +38,12 @@ public class VideoResource {
         return ResponseEntity.created(uri).body(video);
     }
 
+    @PutMapping(value = "/{id}")
+    public ResponseEntity<Video> update(@PathVariable Long id, @Valid @RequestBody Video video) {
+        video = service.update(id, video);
+        return ResponseEntity.ok().body(video);
+    }
+
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<Video> delete(@PathVariable Long id) {
         service.delete(id);

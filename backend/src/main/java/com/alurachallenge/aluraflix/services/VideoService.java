@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,6 +31,19 @@ public class VideoService {
         Video entity = new Video();
         entity = repository.save(video);
         return entity;
+    }
+
+    public Video update(Long id, Video obj) {
+        try {
+            Video entity = repository.getById(id);
+            entity.setDescricao(obj.getDescricao());
+            entity.setTitulo(obj.getTitulo());
+            entity.setUrl(obj.getUrl());
+
+            return repository.save(entity);
+        } catch (EntityNotFoundException e) {
+            throw new ResourceNotFoundException("Id not found " + id);
+        }
     }
 
     public void delete(Long id) {
