@@ -37,4 +37,10 @@ public class VideoResource {
                 .buildAndExpand(video.getId()).toUri();
         return ResponseEntity.created(uri).body(video);
     }
+
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity<Video> delete(@PathVariable Long id) {
+        service.delete(id);
+        return ResponseEntity.noContent().build();
+    }
 }

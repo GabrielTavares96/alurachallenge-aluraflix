@@ -2,7 +2,9 @@ package com.alurachallenge.aluraflix.services;
 
 import com.alurachallenge.aluraflix.entities.Video;
 import com.alurachallenge.aluraflix.repositories.VideoRepository;
+import com.alurachallenge.aluraflix.services.exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,7 +18,7 @@ public class VideoService {
 
     public Video findById(Long id) {
         Optional<Video> video = repository.findById(id);
-        return video.get();
+        return video.orElseThrow(() -> new ResourceNotFoundException(id));
     }
 
     public List<Video> findAll() {
@@ -28,5 +30,13 @@ public class VideoService {
         Video entity = new Video();
         entity = repository.save(video);
         return entity;
+    }
+
+    public void delete(Long id) {
+        try {
+            repository.deleteById(id);
+        } catch (EmptyResultDataAccessException e) {
+            throw new ResourceNotFoundException(id);
+        }
     }
 }
