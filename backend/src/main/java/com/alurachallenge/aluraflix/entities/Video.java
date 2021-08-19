@@ -13,6 +13,9 @@ public class Video {
     private String descricao;
     private String url;
 
+    public Video() {
+    }
+
     public Video(Long id, String titulo, String descricao, String url) {
         this.id = id;
         this.titulo = titulo;
