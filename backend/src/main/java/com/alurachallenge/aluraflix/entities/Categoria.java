@@ -11,4 +11,37 @@ public class Categoria {
     private Long id;
     private String titulo;
     private String cor;
+
+    public Categoria() {
+    }
+
+    public Categoria(Long id, String titulo, String cor) {
+        this.id = id;
+        this.titulo = titulo;
+        this.cor = cor;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getTitulo() {
+        return titulo;
+    }
+
+    public void setTitulo(String titulo) {
+        this.titulo = titulo;
+    }
+
+    public String getCor() {
+        return cor;
+    }
+
+    public void setCor(String cor) {
+        this.cor = cor;
+    }
 }
