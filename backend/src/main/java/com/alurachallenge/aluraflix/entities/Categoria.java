@@ -1,6 +1,7 @@
 package com.alurachallenge.aluraflix.entities;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 
 @Entity
 @Table(name = "categorias")
@@ -9,7 +10,11 @@ public class Categoria {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @NotBlank(message = "Campo obrigatório")
     private String titulo;
+
+    @NotBlank(message = "Campo obrigatório")
     private String cor;
 
     public Categoria() {

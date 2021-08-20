@@ -41,7 +41,7 @@ public class VideoResource {
     @PutMapping(value = "/{id}")
     public ResponseEntity<Video> update(@PathVariable Long id, @Valid @RequestBody Video video) {
         video = service.update(id, video);
-        return ResponseEntity.ok().body(video);
+        return ResponseEntity.ok(video);
     }
 
     @DeleteMapping(value = "/{id}")

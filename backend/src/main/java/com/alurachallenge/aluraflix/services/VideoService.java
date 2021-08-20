@@ -28,8 +28,7 @@ public class VideoService {
     }
 
     public Video insert(Video video) {
-        Video entity = new Video();
-        entity = repository.save(video);
+        Video entity = repository.save(video);
         return entity;
     }
 
