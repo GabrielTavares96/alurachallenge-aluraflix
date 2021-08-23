@@ -1,8 +1,9 @@
 package com.alurachallenge.aluraflix.resources;
 
 import com.alurachallenge.aluraflix.dto.CategoriaDTO;
-import com.alurachallenge.aluraflix.entities.Categoria;
+import com.alurachallenge.aluraflix.dto.VideoDTO;
 import com.alurachallenge.aluraflix.services.CategoriaService;
+import com.alurachallenge.aluraflix.services.VideoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,9 +20,12 @@ public class CategoriaResource {
     @Autowired
     private CategoriaService service;
 
+    @Autowired
+    private VideoService videoService;
+
     @GetMapping
-    public ResponseEntity<List<Categoria>> findAll() {
-        List<Categoria> categorias = service.findAll();
+    public ResponseEntity<List<CategoriaDTO>> findAll() {
+        List<CategoriaDTO> categorias = service.findAll();
         return ResponseEntity.ok(categorias);
     }
 
@@ -31,6 +35,11 @@ public class CategoriaResource {
         return ResponseEntity.ok(dto);
     }
 
+    @GetMapping(value = "/{id}/videos")
+    public ResponseEntity<List<VideoDTO>> findVideoByCategoria(@PathVariable Long id) {
+        List<VideoDTO> dto = videoService.findVideoByCategoria(id);
+        return ResponseEntity.ok(dto);
+    }
 
     @PostMapping
     public ResponseEntity<CategoriaDTO> insert(@Valid @RequestBody CategoriaDTO dto) {

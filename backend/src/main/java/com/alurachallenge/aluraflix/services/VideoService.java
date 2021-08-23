@@ -15,7 +15,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class VideoService {
@@ -37,6 +39,11 @@ public class VideoService {
     public Page<VideoDTO> findAll(PageRequest pageRequest) {
         Page<Video> videos = repository.findAll(pageRequest);
         return videos.map(x -> new VideoDTO(x));
+    }
+
+    public List<VideoDTO> findVideoByCategoria(Long id) {
+        List<Video> videos = repository.findVideoByCategoriaId(id);
+        return videos.stream().map(x -> new VideoDTO(x)).collect(Collectors.toList());
     }
 
     @Transactional
