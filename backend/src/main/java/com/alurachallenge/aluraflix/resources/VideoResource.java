@@ -13,6 +13,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
 import java.net.URI;
+import java.util.List;
 
 @RestController
 @RequestMapping(value = "/videos")
@@ -26,6 +27,16 @@ public class VideoResource {
         VideoDTO dto = service.findById(id);
         return ResponseEntity.ok(dto);
     }
+
+    @GetMapping(value = "/")
+    public ResponseEntity<List<VideoDTO>> findVideoByCategoria
+            (
+                    @RequestParam(value = "search", required = true) String titulo
+            ) {
+        List<VideoDTO> dto = service.findVideoByTitulo(titulo);
+        return ResponseEntity.ok(dto);
+    }
+
 
     @GetMapping
     public ResponseEntity<Page<VideoDTO>> findAll(

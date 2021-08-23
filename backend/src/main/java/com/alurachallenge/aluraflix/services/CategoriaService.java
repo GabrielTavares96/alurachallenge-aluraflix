@@ -7,6 +7,7 @@ import com.alurachallenge.aluraflix.services.exceptions.ResourceNotFoundExceptio
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
@@ -19,17 +20,20 @@ public class CategoriaService {
     @Autowired
     private CategoriaRepository repository;
 
+    @Transactional(readOnly = true)
     public List<CategoriaDTO> findAll() {
         List<Categoria> categorias = repository.findAll();
         return categorias.stream().map(x -> new CategoriaDTO(x)).collect(Collectors.toList());
     }
 
+    @Transactional(readOnly = true)
     public CategoriaDTO findById(Long id) {
         Optional<Categoria> categoria = repository.findById(id);
         Categoria entity = categoria.orElseThrow(() -> new ResourceNotFoundException(id));
         return new CategoriaDTO(entity);
     }
 
+    @Transactional
     public CategoriaDTO insert(CategoriaDTO dto) {
         Categoria entity = new Categoria();
 
@@ -41,6 +45,7 @@ public class CategoriaService {
         return new CategoriaDTO(entity);
     }
 
+    @Transactional
     public CategoriaDTO update(Long id, CategoriaDTO dto) {
         try {
             Categoria entity = repository.getById(id);

@@ -41,8 +41,15 @@ public class VideoService {
         return videos.map(x -> new VideoDTO(x));
     }
 
+    @Transactional(readOnly = true)
     public List<VideoDTO> findVideoByCategoria(Long id) {
         List<Video> videos = repository.findVideoByCategoriaId(id);
+        return videos.stream().map(x -> new VideoDTO(x)).collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
+    public List<VideoDTO> findVideoByTitulo(String titulo) {
+        List<Video> videos = repository.findVideoBytitulo(titulo);
         return videos.stream().map(x -> new VideoDTO(x)).collect(Collectors.toList());
     }
 
