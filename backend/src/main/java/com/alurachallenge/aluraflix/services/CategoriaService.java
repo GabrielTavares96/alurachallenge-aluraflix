@@ -1,5 +1,6 @@
 package com.alurachallenge.aluraflix.services;
 
+import com.alurachallenge.aluraflix.dto.CategoriaDTO;
 import com.alurachallenge.aluraflix.entities.Categoria;
 import com.alurachallenge.aluraflix.repositories.CategoriaRepository;
 import com.alurachallenge.aluraflix.services.exceptions.ResourceNotFoundException;
@@ -22,22 +23,31 @@ public class CategoriaService {
         return categorias;
     }
 
-    public Categoria findById(Long id) {
+    public CategoriaDTO findById(Long id) {
         Optional<Categoria> categoria = repository.findById(id);
-        return categoria.orElseThrow(() -> new ResourceNotFoundException(id));
+        Categoria entity = categoria.orElseThrow(() -> new ResourceNotFoundException(id));
+        return new CategoriaDTO(entity);
     }
 
-    public Categoria insert(Categoria categoria) {
-        Categoria entity = repository.save(categoria);
-        return entity;
+    public CategoriaDTO insert(CategoriaDTO dto) {
+        Categoria entity = new Categoria();
+
+        entity.setTitulo(dto.getTitulo());
+        entity.setCor(dto.getCor());
+
+        entity = repository.save(entity);
+
+        return new CategoriaDTO(entity);
     }
 
-    public Categoria update(Long id, Categoria obj) {
+    public CategoriaDTO update(Long id, CategoriaDTO dto) {
         try {
             Categoria entity = repository.getById(id);
-            entity.setTitulo(obj.getTitulo());
-            entity.setCor(obj.getCor());
-            return repository.save(entity);
+            entity.setTitulo(dto.getTitulo());
+            entity.setCor(dto.getCor());
+            entity = repository.save(entity);
+
+            return new CategoriaDTO(entity);
         } catch (EntityNotFoundException e) {
             throw new ResourceNotFoundException("Id not found " + id);
         }

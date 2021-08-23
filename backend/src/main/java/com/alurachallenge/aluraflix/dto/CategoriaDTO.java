@@ -1,26 +1,26 @@
-package com.alurachallenge.aluraflix.entities;
+package com.alurachallenge.aluraflix.dto;
 
-import javax.persistence.*;
+import com.alurachallenge.aluraflix.entities.Categoria;
 
-@Entity
-@Table(name = "categorias")
-public class Categoria {
+import javax.validation.constraints.NotBlank;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class CategoriaDTO {
+
     private Long id;
 
+    @NotBlank(message = "Campo obrigatório")
     private String titulo;
 
+    @NotBlank(message = "Campo obrigatório")
     private String cor;
 
-    public Categoria() {
+    public CategoriaDTO() {
     }
 
-    public Categoria(Long id, String titulo, String cor) {
-        this.id = id;
-        this.titulo = titulo;
-        this.cor = cor;
+    public CategoriaDTO(Categoria entity) {
+        this.id = entity.getId();
+        this.titulo = entity.getTitulo();
+        this.cor = entity.getCor();
     }
 
     public Long getId() {
@@ -46,6 +46,4 @@ public class Categoria {
     public void setCor(String cor) {
         this.cor = cor;
     }
-
-
 }

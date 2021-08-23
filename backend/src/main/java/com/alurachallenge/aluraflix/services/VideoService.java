@@ -1,14 +1,20 @@
 package com.alurachallenge.aluraflix.services;
 
+import com.alurachallenge.aluraflix.dto.VideoDTO;
+import com.alurachallenge.aluraflix.dto.VideoInsertDTO;
+import com.alurachallenge.aluraflix.entities.Categoria;
 import com.alurachallenge.aluraflix.entities.Video;
+import com.alurachallenge.aluraflix.repositories.CategoriaRepository;
 import com.alurachallenge.aluraflix.repositories.VideoRepository;
 import com.alurachallenge.aluraflix.services.exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -17,29 +23,53 @@ public class VideoService {
     @Autowired
     private VideoRepository repository;
 
-    public Video findById(Long id) {
+    @Autowired
+    private CategoriaRepository categoriaRepository;
+
+    @Transactional(readOnly = true)
+    public VideoDTO findById(Long id) {
         Optional<Video> video = repository.findById(id);
-        return video.orElseThrow(() -> new ResourceNotFoundException(id));
+        Video entity = video.orElseThrow(() -> new ResourceNotFoundException(id));
+        return new VideoDTO(entity);
     }
 
-    public List<Video> findAll() {
-        List<Video> videos = repository.findAll();
-        return videos;
+    @Transactional(readOnly = true)
+    public Page<VideoDTO> findAll(PageRequest pageRequest) {
+        Page<Video> videos = repository.findAll(pageRequest);
+        return videos.map(x -> new VideoDTO(x));
     }
 
-    public Video insert(Video video) {
-        Video entity = repository.save(video);
-        return entity;
+    @Transactional
+    public VideoInsertDTO insert(VideoInsertDTO dto) {
+
+        Video entity = new Video();
+
+        entity.setDescricao(dto.getDescricao());
+        entity.setTitulo(dto.getTitulo());
+        entity.setUrl(dto.getUrl());
+
+        Categoria categoria = categoriaRepository.getById(dto.getCategoriaId());
+        entity.setCategoria(categoria);
+
+        entity = repository.save(entity);
+
+        return new VideoInsertDTO(entity);
     }
 
-    public Video update(Long id, Video obj) {
+    @Transactional
+    public VideoInsertDTO update(Long id, VideoInsertDTO dto) {
         try {
             Video entity = repository.getById(id);
-            entity.setDescricao(obj.getDescricao());
-            entity.setTitulo(obj.getTitulo());
-            entity.setUrl(obj.getUrl());
+            entity.setDescricao(dto.getDescricao());
+            entity.setTitulo(dto.getTitulo());
+            entity.setUrl(dto.getUrl());
 
-            return repository.save(entity);
+            Categoria categoria = categoriaRepository.getById(dto.getCategoriaId());
+            entity.setCategoria(categoria);
+
+            entity = repository.save(entity);
+
+            return new VideoInsertDTO(entity);
         } catch (EntityNotFoundException e) {
             throw new ResourceNotFoundException("Id not found " + id);
         }

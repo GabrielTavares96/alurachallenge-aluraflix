@@ -1,5 +1,6 @@
 package com.alurachallenge.aluraflix.resources;
 
+import com.alurachallenge.aluraflix.dto.CategoriaDTO;
 import com.alurachallenge.aluraflix.entities.Categoria;
 import com.alurachallenge.aluraflix.services.CategoriaService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,29 +26,28 @@ public class CategoriaResource {
     }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<Categoria> findById(@PathVariable Long id) {
-        Categoria categoria = service.findById(id);
-        return ResponseEntity.ok(categoria);
+    public ResponseEntity<CategoriaDTO> findById(@PathVariable Long id) {
+        CategoriaDTO dto = service.findById(id);
+        return ResponseEntity.ok(dto);
     }
-
 
 
     @PostMapping
-    public ResponseEntity<Categoria> insert(@Valid @RequestBody Categoria categoria) {
-        categoria = service.insert(categoria);
+    public ResponseEntity<CategoriaDTO> insert(@Valid @RequestBody CategoriaDTO dto) {
+        dto = service.insert(dto);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
-                .buildAndExpand(categoria.getId()).toUri();
-        return ResponseEntity.created(uri).body(categoria);
+                .buildAndExpand(dto.getId()).toUri();
+        return ResponseEntity.created(uri).body(dto);
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<Categoria> update(@PathVariable Long id, @Valid @RequestBody Categoria categoria) {
-        categoria = service.update(id, categoria);
-        return ResponseEntity.ok(categoria);
+    public ResponseEntity<CategoriaDTO> update(@PathVariable Long id, @Valid @RequestBody CategoriaDTO dto) {
+        dto = service.update(id, dto);
+        return ResponseEntity.ok(dto);
     }
 
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<Categoria> delete(@PathVariable Long id) {
+    public ResponseEntity<CategoriaDTO> delete(@PathVariable Long id) {
         service.delete(id);
         return ResponseEntity.noContent().build();
     }
